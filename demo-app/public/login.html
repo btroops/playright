@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 · Playwright 练习应用</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 420px; margin: 60px auto; padding: 0 16px; color: #222; }
+    label { display: block; margin-top: 16px; }
+    input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 20px; padding: 8px 24px; }
+    #error { color: #c0392b; margin-top: 12px; min-height: 1.2em; }
+    .hint { color: #888; font-size: 14px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <h1>登录</h1>
+  <form id="login-form">
+    <label for="username">用户名</label>
+    <input id="username" name="username" type="text" autocomplete="username" />
+    <label for="password">密码</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" />
+    <button type="submit">登录</button>
+    <p id="error" role="alert"></p>
+  </form>
+  <p class="hint">演示账号：demo / pass123</p>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value,
+        }),
+      });
+      if (res.ok) {
+        location.href = '/todos.html';
+      } else {
+        const body = await res.json();
+        document.getElementById('error').textContent = body.error || '登录失败';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>练习场 · Playwright 练习应用</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #222; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px 20px; margin-top: 16px; }
+    section h2 { margin-top: 0; font-size: 18px; }
+    button { margin-right: 8px; }
+    .tip-wrap { position: relative; display: inline-block; border-bottom: 1px dotted #555; cursor: help; }
+    .tip-wrap .tip { display: none; position: absolute; bottom: 130%; left: 0; background: #333; color: #fff; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
+    .tip-wrap:hover .tip { display: block; }
+  </style>
+</head>
+<body>
+  <h1>练习场</h1>
+  <p>这一页集中了自动化测试中的常见考点，每个区块对应一类交互。</p>
+
+  <section id="dialog-section">
+    <h2>弹窗对话框</h2>
+    <button id="alert-btn">弹出 Alert</button>
+    <button id="confirm-btn">弹出 Confirm</button>
+    <p id="confirm-result"></p>
+  </section>
+
+  <section id="slow-section">
+    <h2>慢速内容（练习自动等待）</h2>
+    <button id="slow-load">加载慢速内容（约 2 秒）</button>
+    <ul id="slow-list"></ul>
+  </section>
+
+  <section id="lazy-section">
+    <h2>动态列表</h2>
+    <button id="load-more">加载更多</button>
+    <ul id="lazy-list">
+      <li>条目 1</li>
+      <li>条目 2</li>
+    </ul>
+  </section>
+
+  <section id="upload-section">
+    <h2>文件上传</h2>
+    <input id="file-input" type="file" aria-label="选择文件" />
+    <p id="upload-result">尚未选择文件</p>
+  </section>
+
+  <section id="enable-section">
+    <h2>启用与禁用</h2>
+    <label><input id="agree" type="checkbox" /> 我已阅读说明</label>
+    <button id="submit-btn" disabled>提交</button>
+    <p id="submit-result"></p>
+  </section>
+
+  <section id="hover-section">
+    <h2>悬停提示</h2>
+    <p>把鼠标悬停在 <span class="tip-wrap" id="hover-target">这段文字<span class="tip" id="hover-tip">悬停提示出现了</span></span> 上。</p>
+  </section>
+
+  <section id="iframe-section">
+    <h2>iframe 内嵌页面</h2>
+    <iframe id="iframe-box" src="/iframe-inner.html" width="100%" height="160" title="iframe 示例"></iframe>
+  </section>
+
+  <script>
+    // 弹窗
+    document.getElementById('alert-btn').addEventListener('click', () => {
+      window.alert('这是一个 Alert 弹窗');
+    });
+    document.getElementById('confirm-btn').addEventListener('click', () => {
+      const yes = window.confirm('确定要继续吗？');
+      document.getElementById('confirm-result').textContent = yes ? '已选择：确定' : '已选择：取消';
+    });
+
+    // 慢速内容
+    let slowCount = 0;
+    document.getElementById('slow-load').addEventListener('click', async (e) => {
+      const btn = e.target;
+      btn.disabled = true;
+      await fetch('/api/slow?ms=2000');
+      slowCount += 1;
+      const li = document.createElement('li');
+      li.textContent = `第 ${slowCount} 次加载完成`;
+      document.getElementById('slow-list').appendChild(li);
+      btn.disabled = false;
+    });
+
+    // 动态列表
+    let item = 2;
+    document.getElementById('load-more').addEventListener('click', () => {
+      for (let i = 0; i < 3; i++) {
+        item += 1;
+        const li = document.createElement('li');
+        li.textContent = `条目 ${item}`;
+        document.getElementById('lazy-list').appendChild(li);
+      }
+    });
+
+    // 文件上传
+    document.getElementById('file-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      document.getElementById('upload-result').textContent =
+        file ? `已选择：${file.name}（${file.size} 字节）` : '尚未选择文件';
+    });
+
+    // 启用与禁用
+    document.getElementById('agree').addEventListener('change', (e) => {
+      document.getElementById('submit-btn').disabled = !e.target.checked;
+    });
+    document.getElementById('submit-btn').addEventListener('click', () => {
+      document.getElementById('submit-result').textContent = '提交成功';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "playwright-lab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright 自动化测试学习项目（课程式 + git worktree 多分支工作流）",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "show-report": "playwright show-report",
+    "demo-app": "node demo-app/server.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "express": "^5.2.1"
+  }
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>iframe 内部</title>
+  <style>
+    body { font-family: system-ui, sans-serif; color: #222; }
+  </style>
+</head>
+<body>
+  <h2>我是 iframe 内部页面</h2>
+  <p id="iframe-text">iframe 里的文本内容</p>
+  <button id="iframe-btn">点击我（iframe 内）</button>
+  <p id="iframe-msg"></p>
+
+  <script>
+    document.getElementById('iframe-btn').addEventListener('click', () => {
+      document.getElementById('iframe-msg').textContent = 'iframe 内按钮被点击了';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# 依赖
+node_modules/
+
+# 测试产物（各 worktree 内独立生成，天然隔离）
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# 本地环境（worktree 端口分配等，不入库）
+.env
+
+# 日志与杂项
+*.log
+.DS_Store
+
+# 编辑器 / 工具
+.zcode/

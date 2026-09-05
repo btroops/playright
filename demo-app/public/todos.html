@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo 列表 · Playwright 练习应用</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 560px; margin: 40px auto; padding: 0 16px; color: #222; }
+    .row { display: flex; gap: 8px; margin-top: 16px; }
+    input[type="text"] { flex: 1; padding: 8px; }
+    li { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #eee; }
+    li span { flex: 1; }
+    li.done span { text-decoration: line-through; color: #999; }
+    #stats { color: #666; }
+  </style>
+</head>
+<body>
+  <h1>我的待办</h1>
+  <div class="row">
+    <input id="new-todo" type="text" placeholder="想做什么？" aria-label="新待办标题" />
+    <button id="add-btn">添加</button>
+  </div>
+  <ul id="todo-list"></ul>
+  <p id="stats"></p>
+  <button id="logout-btn">退出登录</button>
+
+  <script>
+    const list = document.getElementById('todo-list');
+    const stats = document.getElementById('stats');
+
+    function render(todos) {
+      list.innerHTML = '';
+      for (const t of todos) {
+        const li = document.createElement('li');
+        li.dataset.id = t.id;
+        if (t.done) li.classList.add('done');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = t.done;
+        checkbox.addEventListener('change', async () => {
+          await fetch(`/api/todos/${t.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ done: checkbox.checked }),
+          });
+          load();
+        });
+
+        const span = document.createElement('span');
+        span.textContent = t.title;
+
+        const del = document.createElement('button');
+        del.textContent = '删除';
+        del.addEventListener('click', async () => {
+          await fetch(`/api/todos/${t.id}`, { method: 'DELETE' });
+          load();
+        });
+
+        li.append(checkbox, span, del);
+        list.appendChild(li);
+      }
+      const done = todos.filter((t) => t.done).length;
+      stats.textContent = `共 ${todos.length} 项，完成 ${done} 项`;
+    }
+
+    async function load() {
+      const res = await fetch('/api/todos');
+      if (res.status === 401) {
+        location.href = '/login.html';
+        return;
+      }
+      render(await res.json());
+    }
+
+    document.getElementById('add-btn').addEventListener('click', async () => {
+      const input = document.getElementById('new-todo');
+      const title = input.value.trim();
+      if (!title) return;
+      await fetch('/api/todos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title }),
+      });
+      input.value = '';
+      load();
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      location.href = '/login.html';
+    });
+
+    load();
+  </script>
+</body>
+</html>

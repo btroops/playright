@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playwright 练习应用</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #222; }
+    nav a { margin-right: 16px; }
+    .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px 20px; margin-top: 24px; }
+    footer { margin-top: 40px; color: #888; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/index.html">首页</a>
+    <a href="/login.html">登录</a>
+    <a href="/todos.html">Todo 列表</a>
+    <a href="/lab.html">练习场</a>
+  </nav>
+
+  <h1>Playwright 练习应用</h1>
+  <p>这是一个专门为学习 Playwright 自动化测试搭建的极简应用，页面结构刻意保持简单稳定。</p>
+
+  <div class="card">
+    <h2>包含的功能</h2>
+    <ul>
+      <li><a href="/login.html">登录页</a>：表单交互、成功/失败分支（演示账号 demo / pass123）</li>
+      <li><a href="/todos.html">Todo 列表</a>：增删改查，背后是 JSON API，可用于 UI 和 API 两类测试</li>
+      <li><a href="/lab.html">练习场</a>：弹窗、iframe、文件上传、慢速加载、禁用按钮等常见考点</li>
+    </ul>
+  </div>
+
+  <footer>数据保存在内存里，重启 demo-app 即恢复初始状态。</footer>
+</body>
+</html>
