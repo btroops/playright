@@ -30,18 +30,31 @@ process.env.no_proxy = process.env.NO_PROXY;
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  retries: 0,
+  // CI 上自动重试过滤网络抖动（flaky 标记仍会出现在报告里，持续不稳就要修）；
+  // 本地保持 0 次——失败立刻浮出水面，快速反馈
+  retries: process.env.CI ? 2 : 0,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL,
     // 失败的用例自动保留 trace，HTML 报告里可直接回放
     trace: 'retain-on-failure',
+    // 失败自动截屏（第 8 课）：随报告附上「案发现场」照片
+    screenshot: 'only-on-failure',
   },
+  // 断言默认超时显式声明（第 3 课）：团队对齐「等多久」的口径；
+  // 个别天生慢的断言用单次 { timeout } 覆盖，别全局调大
+  expect: { timeout: 5_000 },
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    // 多浏览器练习（第 8 课作业）：先 npx playwright install firefox webkit
+    // 再取消下面的注释——下载约 200MB，按需开启
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
   ],
   webServer: {
     command: 'node demo-app/server.js',

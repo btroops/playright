@@ -12,7 +12,7 @@
 | 05 | `learn/05-pom` | 组织：Page Object Model、自定义 fixtures | ⬜ |
 | 06 | `learn/06-network` | 网络：route 拦截与 Mock、等待网络响应 | ⬜ |
 | 07 | `learn/07-api` | API 测试：request fixture、storageState 处理登录态 | ⬜ |
-| 08 | `learn/08-ci` | 工程化：并行、多浏览器、截图对比、（可选）GitHub Actions | ⬜ |
+| 08 | `learn/08-ci` | 工程化：并行、多浏览器、截图对比、（可选）GitHub Actions | 📚 已备好 |
 
 ## 各阶段与 demo-app 功能的对应
 
