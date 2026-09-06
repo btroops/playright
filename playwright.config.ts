@@ -20,6 +20,13 @@ if (!process.env.E2E_PORT) {
 const port = Number(process.env.E2E_PORT) || 3100;
 const baseURL = `http://localhost:${port}`;
 
+// 测试目标永远是 localhost，但宿主机 shell 可能带指向 Windows 宿主的代理变量
+// （尤其 ALL_PROXY），webServer 健康检查与浏览器都会遵循它们——代理失效时测试
+// 会静默卡死。这里只把回环地址加入 NO_PROXY 绕过代理，不影响外部站点走代理。
+const loopback = 'localhost,127.0.0.1,::1';
+process.env.NO_PROXY = process.env.NO_PROXY ? `${process.env.NO_PROXY},${loopback}` : loopback;
+process.env.no_proxy = process.env.NO_PROXY;
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,

@@ -76,5 +76,6 @@ bash scripts/remove-worktree.sh learn/01-basics --delete-branch
 
 - **`fatal: 'xxx' is already checked out at ...`**：该分支已在别的 worktree 检出。要么去那个 worktree 工作，要么先把它移除，不要绕过。
 - **测试报端口被占用（EADDRINUSE）**：有别的 worktree 用了同一端口。检查各自 `.env` 的 `E2E_PORT` 是否不同；必要时手动改自己的 `.env` 后重跑。
-- **npm/playwright 卡住不动**：大概率是失效代理（见 README「WSL 环境注意事项」），unset 代理变量后重试。
+- **`npm install` / `playwright install` 卡住不动**：大概率是失效代理（见 README「WSL 环境注意事项」），unset 代理变量后重试。
+- **测试卡死或报 `Timed out waiting ... from config.webServer`**：理论上已被 config 里的 `NO_PROXY` 免疫；若仍出现，检查 `playwright.config.ts` 顶部的 NO_PROXY 注入是否被改动。
 - **新 worktree 里跑测试报缺浏览器**：浏览器与全局缓存共享，一般不会缺；若提示缺，执行一次 `npx playwright install chromium`。

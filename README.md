@@ -33,12 +33,13 @@ npx playwright test
 ## WSL 环境注意事项
 
 - **浏览器**：Playwright 使用 WSL 内部的 Linux Chromium，与 Windows 侧浏览器无关。headless 模式无任何图形依赖；headed 模式 / UI Mode / Trace Viewer 依赖 WSLg（本机已可用），窗口会直接显示在 Windows 桌面。
-- **代理陷阱**：shell 里默认带有指向 Windows 宿主的代理变量（`HTTP_PROXY` 等，`172.29.48.1:7890`）。**该代理不通时，npm / playwright 会卡死**。处理办法：
+- **代理陷阱**：shell 里默认带有指向 Windows 宿主的代理变量（`HTTP_PROXY` 等，`172.29.48.1:7890`）。**代理不通时，安装/下载类命令会卡死**（npm install、npx playwright install）。处理办法：
   ```bash
   # 方法一：临时清掉代理再执行
   unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
   # 方法二：在 Windows 侧打开代理并允许局域网连接
   ```
+  跑测试**不受影响**：`playwright.config.ts` 已把 localhost 加入 `NO_PROXY`，直接 `npx playwright test` 即可。
 - **查看报告**：`npm run show-report` 会在 WSL 里起一个本地服务（默认 <http://localhost:9323>），直接用 Windows 浏览器打开该地址即可（WSL2 的 localhost 转发）。
 - **Node 版本**：项目通过 `.nvmrc` 固定 v24.11.1，进目录先 `nvm use`。
 - **版本限制**：Playwright 1.63 起不再支持 Ubuntu 20.04（本机发行版），本项目锁定 **1.62.1**。若日后把 WSL 发行版升级到 22.04/24.04，可自由升级 Playwright。

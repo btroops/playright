@@ -23,5 +23,5 @@
 
 ## 环境注意
 
-11. 执行 npm / playwright 安装类命令前确认代理可用：本机 shell 默认带 `HTTP_PROXY` 等变量，指向 Windows 宿主 `172.29.48.1:7890`；代理不通时先 `unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy`（README 有说明）。
+11. 执行 npm / playwright **安装类**命令前确认代理可用：本机 shell 默认带 `HTTP_PROXY` 等变量，指向 Windows 宿主 `172.29.48.1:7890`；代理不通时先 `unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy`（README 有说明）。跑测试无需处理——`playwright.config.ts` 已注入 `NO_PROXY` 免疫。
 12. 浏览器二进制在 `~/.cache/ms-playwright/`，全局共享、只读复用，不会造成分支间污染；新 worktree 缺浏览器时执行 `npx playwright install chromium`。
