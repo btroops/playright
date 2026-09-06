@@ -42,7 +42,8 @@ if [ ! -d "$WT_DIR" ]; then
   exit 1
 fi
 
-BRANCH="$(git -C "$WT_DIR" rev-parse --abbrev-ref HEAD)"
+# branch --show-current 不受「tag 与分支同名」歧义影响（rev-parse --abbrev-ref 在同名 tag 存在时会返回 heads/…）
+BRANCH="$(git -C "$WT_DIR" branch --show-current)"
 
 REMOVE_ARGS=("$WT_DIR")
 if [ "$FORCE" = true ]; then

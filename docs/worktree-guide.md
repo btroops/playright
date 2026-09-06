@@ -40,7 +40,7 @@ npx playwright test          # 测试自动读取 .env 里的 E2E_PORT
 
 # 3. 结课：打同名 tag（graph 上的永久名字）→ --no-ff 合并（保留分叉拓扑）
 #    （先在自己 worktree 里 lint 零 error + 测试全绿，然后在 main 所在的目录执行）
-git tag -a learn/01-basics -m "第 1 课完成：<一句话总结>"
+git tag -a learn/01-basics learn/01-basics -m "第 1 课完成：<一句话总结>"
 git merge --no-ff learn/01-basics
 
 # 4. 清理 worktree；分支归档或删除，二选一
@@ -78,7 +78,7 @@ mkdir -p ../archives && git archive -o ../archives/learn-01-basics.tar learn/01-
   ```bash
   git worktree list                 # 查看所有 worktree
   git worktree prune                # 清理失效记录（目录被手动删掉时）
-  git tag -a <分支名> -m "结课总结"  # 结课标记（在分支尖端）
+  git tag -a <分支名> <分支名> -m "结课总结"  # 结课标记（显式打在分支尖端，防错打 HEAD）
   git branch -m <分支名> archive/<分支名>   # 分支归档改名
   git branch -d <分支名>            # 删除已合并分支
   git archive -o <路径>.tar <tag>   # 导出某个结课状态的代码快照
