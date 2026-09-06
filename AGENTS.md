@@ -22,8 +22,10 @@
 
 11. 只把**完成且测试通过（`npx playwright test`）、lint 通过（`npm run lint`）**的工作 merge 回 main（main 保持绿色）。结课时先给分支尖端打**同名附注 tag**（`git tag -a <分支名> <分支名> -m "结课总结"`——第二个参数显式指定打在分支上，省略会错打在当前 HEAD），并用 **`--no-ff`** 合并——保留 graph 上的分叉拓扑，之后删分支也不影响回看。
 12. 合并后用 `bash scripts/remove-worktree.sh <分支名> [--archive-branch] [--delete-branch]` 清理：归档（改名 `archive/<分支名>`，graph 仍可见）或删除；代码快照可选导出（`git archive -o ../archives/<分支名>.tar <tag>`）。有未提交改动时 git 会拒绝删除——先提交或明确丢弃，不要习惯性 `--force`。
+13. 结课合并后同步远程（origin = github.com:btroops/playright，SSH）：`git push` 推 main、`git push origin --tags` 推结课标记、`git push origin <分支名>` 更新在研分支。
+14. 结课提交里同步更新 README 顶部徽章：全量跑一遍测试，把「测试 N 用例·N 通过」与「课程进度 N/9」改成真实数字（数据来自本轮跑测结果与 curriculum 状态）。第 8 课 CI 接入后换成动态徽章，此项退役。
 
 ## 环境注意
 
-13. 执行 npm / playwright **安装类**命令前确认代理可用：本机 shell 默认带 `HTTP_PROXY` 等变量，指向 Windows 宿主 `172.29.48.1:7890`；代理不通时先 `unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy`（README 有说明）。跑测试无需处理——`playwright.config.ts` 已注入 `NO_PROXY` 免疫。
-14. 浏览器二进制在 `~/.cache/ms-playwright/`，全局共享、只读复用，不会造成分支间污染；新 worktree 缺浏览器时执行 `npx playwright install chromium`。
+15. 执行 npm / playwright **安装类**命令前确认代理可用：本机 shell 默认带 `HTTP_PROXY` 等变量，指向 Windows 宿主 `172.29.48.1:7890`；代理不通时先 `unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy`（README 有说明）。跑测试无需处理——`playwright.config.ts` 已注入 `NO_PROXY` 免疫。
+16. 浏览器二进制在 `~/.cache/ms-playwright/`，全局共享、只读复用，不会造成分支间污染；新 worktree 缺浏览器时执行 `npx playwright install chromium`。

@@ -49,6 +49,11 @@ bash scripts/remove-worktree.sh learn/01-basics --archive-branch   # 归档为 a
 
 # 5.（可选）导出代码快照到容器目录的 archives/
 mkdir -p ../archives && git archive -o ../archives/learn-01-basics.tar learn/01-basics
+
+# 6. 远程同步：推送 main 与结课 tag（在研分支用 git push origin <分支名>）
+git push && git push origin --tags
+#    结课提交同时更新 README 顶部徽章（测试 N 用例·N 通过、课程进度 N/9），
+#    数字来自本轮全量跑测与 curriculum 状态——徽章是静态的，结课不改就是过期信息
 ```
 
 ## 四、隔离规则（避免分支间污染）
@@ -72,7 +77,7 @@ mkdir -p ../archives && git archive -o ../archives/learn-01-basics.tar learn/01-
 
 ## 六、清理规则
 
-- 结课清理标准动作：**打 tag → `--no-ff` 合并 → 清理 worktree**；分支二选一：`--archive-branch`（改名 `archive/<分支名>` 留在图上）或 `--delete-branch`（tag 已保住尖端，删除无碍回看）。脚本发现没打 tag 会先提醒。
+- 结课清理标准动作：**打 tag → `--no-ff` 合并 → 清理 worktree → 远程同步 → 更新 README 徽章**；分支二选一：`--archive-branch`（改名 `archive/<分支名>` 留在图上）或 `--delete-branch`（tag 已保住尖端，删除无碍回看）。脚本发现没打 tag 会先提醒。
 - 脚本内 `git worktree remove` 在**有未提交改动时会拒绝**，这是保护机制：先确认改动是否需要提交，不要习惯性加 `--force`。
 - 疑难情况的手工命令：
   ```bash
