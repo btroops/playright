@@ -7,11 +7,12 @@
 普通做法（`git checkout` 切分支）在同一时刻只能停在一个分支上，且切换会带动整个工作目录变化，多个并行任务会互相踩踏。worktree 让每个分支拥有一个**独立完整的工作目录**，互不干扰：
 
 ```
-playright/                        ← 主仓库，一般停在 main
-playright.worktrees/
-├── learn-01-basics/              ← learn/01-basics 分支的工作目录
-├── learn-02-locators/            ← learn/02-locators 分支的工作目录
-└── feat-todo-filter/             ← feat/todo-filter 分支的工作目录
+~/play-right/                      ← 容器目录：仓库与 worktree 都收在同一个文件夹里
+├── playright-lab/                 ← 主仓库，一般停在 main
+└── playright-lab.worktrees/
+    ├── learn-01-basics/           ← learn/01-basics 分支的工作目录
+    ├── learn-02-locators/         ← learn/02-locators 分支的工作目录
+    └── feat-todo-filter/          ← feat/todo-filter 分支的工作目录
 ```
 
 所有 worktree 共享同一个 `.git` 对象库（提交、历史完全互通），但各有各的文件、`node_modules` 和测试产物。
@@ -20,7 +21,7 @@ playright.worktrees/
 
 | 事项 | 约定 |
 |---|---|
-| worktree 位置 | 一律放在 **仓库同级** 的 `../playright.worktrees/<分支slug>`，绝不放进仓库内部 |
+| worktree 位置 | 一律放在容器目录里、与仓库同级：`~/play-right/playright-lab.worktrees/<分支slug>`，绝不放进仓库内部。脚本会按 `仓库同级/<仓库名>.worktrees` 动态推导，仓库移动/改名后无需改脚本 |
 | 分支 slug | 分支名里的 `/` 换成 `-`，如 `learn/01-basics` → `learn-01-basics` |
 | 分支命名 | 课程练习 `learn/<NN>-<主题>`；新功能 `feat/<主题>`；修复 `fix/<主题>` |
 | commit 前缀 | 与分支对应，如 `learn(01): 练习 getByRole`、`feat: todo 支持筛选` |
@@ -34,7 +35,7 @@ bash scripts/new-worktree.sh learn/01-basics
 #    脚本自动完成：创建目录 → npm install → 分配空闲端口写入 .env
 
 # 2. 进入自己的 worktree 工作
-cd ../playright.worktrees/learn-01-basics
+cd ../playright-lab.worktrees/learn-01-basics
 npx playwright test          # 测试自动读取 .env 里的 E2E_PORT
 
 # 3. 提交、合并回 main（在 main 所在的目录执行）

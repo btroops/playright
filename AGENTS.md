@@ -5,13 +5,13 @@
 ## 开工前
 
 1. 先执行 `pwd` 和 `git worktree list`，确认自己所在的 worktree 与对应分支；不要假设自己在主仓库。
-2. 主仓库（原目录）通常停在 main；每个功能/课程分支都有自己独立的 worktree 目录（形如 `../playright.worktrees/<分支名>`）。
+2. 主仓库（原目录）通常停在 main；每个功能/课程分支都有自己独立的 worktree 目录（容器布局：仓库在 `~/play-right/playright-lab/`，worktree 在同级 `~/play-right/playright-lab.worktrees/<分支slug>`）。
 3. 阅读一遍 [docs/worktree-guide.md](docs/worktree-guide.md)。
 
 ## 工作中
 
 4. **只在自己的 worktree 目录内工作**。绝不修改其他 worktree 的文件，绝不 `git checkout` 其他 worktree 已检出的分支（git 会拒绝，也不要绕过）。
-5. 新建工作分支一律用 `bash scripts/new-worktree.sh <分支名>`，它会自动：创建 `../playright.worktrees/<分支名>`、`npm install`、分配独立的 `E2E_PORT` 并写入该 worktree 的 `.env`。
+5. 新建工作分支一律用 `bash scripts/new-worktree.sh <分支名>`，它会自动：创建 `../playright-lab.worktrees/<分支slug>`、`npm install`、分配独立的 `E2E_PORT` 并写入该 worktree 的 `.env`。
 6. 并行跑测试时**不得共用端口**：端口来自各自 worktree 的 `.env`（`E2E_PORT`），由配置自动读取，不要硬编码端口、不要改别人的 `.env`。
 7. 分支命名：课程练习 `learn/<NN>-<主题>`，功能 `feat/<主题>`，修复 `fix/<主题>`。commit 信息带对应前缀，如 `learn(01): 练习 getByRole`。
 8. 产物目录（`playwright-report/`、`test-results/`）和 `.env` 已在 .gitignore 里，不要提交，也不要把它们的内容写到其他 worktree。
