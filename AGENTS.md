@@ -20,8 +20,8 @@
 
 ## 收工
 
-11. 只把**完成且测试通过（`npx playwright test`）、lint 通过（`npm run lint`）**的工作 merge 回 main（main 保持绿色）。练习未完成时留在分支上即可。
-12. 合并后用 `bash scripts/remove-worktree.sh <分支名> [--delete-branch]` 清理。有未提交改动时 git 会拒绝删除——先提交或明确丢弃，不要习惯性 `--force`。
+11. 只把**完成且测试通过（`npx playwright test`）、lint 通过（`npm run lint`）**的工作 merge 回 main（main 保持绿色）。结课时先给分支尖端打**同名附注 tag**（`git tag -a <分支名> -m "结课总结"`），并用 **`--no-ff`** 合并——保留 graph 上的分叉拓扑，之后删分支也不影响回看。
+12. 合并后用 `bash scripts/remove-worktree.sh <分支名> [--archive-branch] [--delete-branch]` 清理：归档（改名 `archive/<分支名>`，graph 仍可见）或删除；代码快照可选导出（`git archive -o ../archives/<分支名>.tar <tag>`）。有未提交改动时 git 会拒绝删除——先提交或明确丢弃，不要习惯性 `--force`。
 
 ## 环境注意
 

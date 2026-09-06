@@ -38,12 +38,17 @@ bash scripts/new-worktree.sh learn/01-basics
 cd ../playright-lab.worktrees/learn-01-basics
 npx playwright test          # 测试自动读取 .env 里的 E2E_PORT
 
-# 3. 提交前自检：lint 零 error + 测试全绿，然后合并回 main（在 main 所在的目录执行）
-npm run lint
-git merge learn/01-basics
+# 3. 结课：打同名 tag（graph 上的永久名字）→ --no-ff 合并（保留分叉拓扑）
+#    （先在自己 worktree 里 lint 零 error + 测试全绿，然后在 main 所在的目录执行）
+git tag -a learn/01-basics -m "第 1 课完成：<一句话总结>"
+git merge --no-ff learn/01-basics
 
-# 4. 清理 worktree 和分支
-bash scripts/remove-worktree.sh learn/01-basics --delete-branch
+# 4. 清理 worktree；分支归档或删除，二选一
+bash scripts/remove-worktree.sh learn/01-basics --archive-branch   # 归档为 archive/…，graph 仍可见
+# 或确认彻底不要：bash scripts/remove-worktree.sh learn/01-basics --delete-branch
+
+# 5.（可选）导出代码快照到容器目录的 archives/
+mkdir -p ../archives && git archive -o ../archives/learn-01-basics.tar learn/01-basics
 ```
 
 ## 四、隔离规则（避免分支间污染）
@@ -62,20 +67,26 @@ bash scripts/remove-worktree.sh learn/01-basics --delete-branch
 - main 始终保持「绿色」：只有完成且测试通过的内容才 merge 回 main。
 - 练习中的半成品留在自己的分支上，不影响别人。
 - 合并前在自己 worktree 里把测试跑绿。
+- **合并一律 `--no-ff`**：快进合并会让历史变成一条直线，graph 上看不出曾有分支；`--no-ff` 产生合并节点，把「分叉-汇合」的环永久刻进提交拓扑——之后无论删不删分支，图上都能回看。
+- **结课先打同名附注 tag**（`git tag -a <分支名> -m "结课总结"`）：tag 和合并节点不同，它给分支尖端一个**名字**，graph 装饰、`git checkout` 回看都靠它。
 
 ## 六、清理规则
 
-- 合并完成后尽快清理：`bash scripts/remove-worktree.sh <分支名> --delete-branch`。
+- 结课清理标准动作：**打 tag → `--no-ff` 合并 → 清理 worktree**；分支二选一：`--archive-branch`（改名 `archive/<分支名>` 留在图上）或 `--delete-branch`（tag 已保住尖端，删除无碍回看）。脚本发现没打 tag 会先提醒。
 - 脚本内 `git worktree remove` 在**有未提交改动时会拒绝**，这是保护机制：先确认改动是否需要提交，不要习惯性加 `--force`。
 - 疑难情况的手工命令：
   ```bash
   git worktree list                 # 查看所有 worktree
   git worktree prune                # 清理失效记录（目录被手动删掉时）
+  git tag -a <分支名> -m "结课总结"  # 结课标记（在分支尖端）
+  git branch -m <分支名> archive/<分支名>   # 分支归档改名
   git branch -d <分支名>            # 删除已合并分支
+  git archive -o <路径>.tar <tag>   # 导出某个结课状态的代码快照
   ```
 
 ## 七、常见问题
 
+- **想在 graph 里回看已结课的分支**：`git log --graph --oneline --decorate --all`——结课 tag（如 `learn/01-basics`）和归档分支（`archive/…`）都还挂着名字；`git checkout <tag名>` 可游离 HEAD 只读回看，`git checkout archive/<分支名>` 可完整检出；代码快照在 `~/playright/archives/`。
 - **`fatal: 'xxx' is already checked out at ...`**：该分支已在别的 worktree 检出。要么去那个 worktree 工作，要么先把它移除，不要绕过。
 - **测试报端口被占用（EADDRINUSE）**：有别的 worktree 用了同一端口。检查各自 `.env` 的 `E2E_PORT` 是否不同；必要时手动改自己的 `.env` 后重跑。
 - **`npm install` / `playwright install` 卡住不动**：大概率是失效代理（见 README「WSL 环境注意事项」），unset 代理变量后重试。
