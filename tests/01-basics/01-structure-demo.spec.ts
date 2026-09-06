@@ -55,8 +55,12 @@ test.describe('练习场', () => {
   });
 });
 
-test('标注示例：skip / fixme', async ({ page }) => {
-  // 讲义第 1 节：skip 与 fixme 都让用例显示为 skipped，语义不同——
-  // skip = 「条件不满足，暂不跑」；fixme = 「这个用例还没写好」。
-  test.fixme('示例：这条用例还没实现，第 2 课后可以回来把它补成真实断言');
+test('标注示例：skip', async ({ page }) => {
+  // 讲义第 1 节：skip = 「条件不满足，暂不跑」。skip 之后的代码不会执行。
+  test.skip(true, '示例：条件不满足时跳过');
+  await page.goto('/');
+});
+
+test.fixme('标注示例：fixme', () => {
+  // fixme = 「这个用例还没写好」，和 skip（条件性跳过）语义不同
 });
