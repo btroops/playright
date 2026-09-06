@@ -86,6 +86,7 @@ mkdir -p ../archives && git archive -o ../archives/learn-01-basics.tar learn/01-
 
 ## 七、常见问题
 
+- **测试大面积失败/页面 404，但 `npm run demo-app` 手动访问正常与否不一**：先查有没有**残留的 demo-app 进程**占着端口（比如某次测试被 Ctrl+C 中断、或手动起服务后忘关，且它的工作目录已被删）：`ps aux | grep "[d]emo-app/server.js"`；`config.webServer` 的 `reuseExistingServer` 会复用它——僵尸进程目录已删时 `/api/health` 仍返回 200，但页面全 404。杀掉重跑：`pkill -f "[d]emo-app/server.js"`。
 - **想在 graph 里回看已结课的分支**：`git log --graph --oneline --decorate --all`——结课 tag（如 `learn/01-basics`）和归档分支（`archive/…`）都还挂着名字；`git checkout <tag名>` 可游离 HEAD 只读回看，`git checkout archive/<分支名>` 可完整检出；代码快照在 `~/playright/archives/`。
 - **`fatal: 'xxx' is already checked out at ...`**：该分支已在别的 worktree 检出。要么去那个 worktree 工作，要么先把它移除，不要绕过。
 - **测试报端口被占用（EADDRINUSE）**：有别的 worktree 用了同一端口。检查各自 `.env` 的 `E2E_PORT` 是否不同；必要时手动改自己的 `.env` 后重跑。
