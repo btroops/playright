@@ -5,7 +5,7 @@
 ## 开工前
 
 1. 先执行 `pwd` 和 `git worktree list`，确认自己所在的 worktree 与对应分支；不要假设自己在主仓库。
-2. 主仓库（原目录）通常停在 main；每个功能/课程分支都有自己独立的 worktree 目录（容器布局：仓库在 `~/play-right/playright-lab/`，worktree 在同级 `~/play-right/playright-lab.worktrees/<分支slug>`）。
+2. 主仓库（原目录）通常停在 main；每个功能/课程分支都有自己独立的 worktree 目录（容器布局：仓库在 `~/playright/playright-lab/`，worktree 在同级 `~/playright/playright-lab.worktrees/<分支slug>`）。
 3. 阅读一遍 [docs/worktree-guide.md](docs/worktree-guide.md)。
 
 ## 工作中
