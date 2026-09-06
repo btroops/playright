@@ -28,6 +28,7 @@ npx playwright test
 | `npm run test:headed` | 有头模式，浏览器窗口显示到 Windows 桌面（WSLg） |
 | `npm run test:ui` | UI Mode：可视化的用例浏览器与调试器 |
 | `npm run show-report` | 起本地服务查看 HTML 报告 |
+| `npm run lint` | ESLint 检查全部代码（提交前应保持零 error） |
 | `node demo-app/server.js` | 手动启动被测应用（默认 <http://localhost:3100>） |
 
 ## WSL 环境注意事项

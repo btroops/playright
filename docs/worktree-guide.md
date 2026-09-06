@@ -38,7 +38,8 @@ bash scripts/new-worktree.sh learn/01-basics
 cd ../playright-lab.worktrees/learn-01-basics
 npx playwright test          # 测试自动读取 .env 里的 E2E_PORT
 
-# 3. 提交、合并回 main（在 main 所在的目录执行）
+# 3. 提交前自检：lint 零 error + 测试全绿，然后合并回 main（在 main 所在的目录执行）
+npm run lint
 git merge learn/01-basics
 
 # 4. 清理 worktree 和分支

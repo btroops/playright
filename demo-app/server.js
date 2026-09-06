@@ -1,7 +1,7 @@
 // 极简演示应用：为 Playwright 练习提供稳定的被测对象。
 // 内存存储，重启即重置；端口由 PORT 环境变量控制（默认 3100）。
 const express = require('express');
-const crypto = require('crypto');
+const nodeCrypto = require('node:crypto');
 const path = require('path');
 
 const app = express();
@@ -37,7 +37,7 @@ app.get('/api/me', (req, res) => {
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body || {};
   if (username === DEMO_USER.username && password === DEMO_USER.password) {
-    const token = crypto.randomBytes(16).toString('hex');
+    const token = nodeCrypto.randomBytes(16).toString('hex');
     sessions.add(token);
     res.setHeader('Set-Cookie', `session=${token}; Path=/; HttpOnly`);
     return res.json({ ok: true, username });

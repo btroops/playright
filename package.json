@@ -8,10 +8,18 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "show-report": "playwright show-report",
+    "lint": "eslint .",
     "demo-app": "node demo-app/server.js"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "1.62.1",
-    "express": "^5.2.1"
+    "@types/node": "^26.4.1",
+    "eslint": "^10.10.0",
+    "eslint-plugin-playwright": "^2.11.0",
+    "express": "^5.2.1",
+    "globals": "^17.12.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.69.0"
   }
 }
