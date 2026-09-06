@@ -29,6 +29,7 @@
     <h2>慢速内容（练习自动等待）</h2>
     <button id="slow-load" data-testid="slow-load-trigger">加载慢速内容（约 2 秒）</button>
     <ul id="slow-list"></ul>
+    <p id="slow-error" role="alert" style="color:#c0392b; min-height: 1.2em;"></p>
   </section>
 
   <section id="lazy-section">
@@ -74,16 +75,29 @@
     });
 
     // 慢速内容
+    // 慢速内容（第 6 课改进：检查响应状态并处理网络异常——
+    // 之前 fetch 返回 500 也会被当成成功，mock 测试正是用来暴露这种容错盲区的）
     let slowCount = 0;
     document.getElementById('slow-load').addEventListener('click', async (e) => {
       const btn = e.target;
+      const errorBox = document.getElementById('slow-error');
       btn.disabled = true;
-      await fetch('/api/slow?ms=2000');
-      slowCount += 1;
-      const li = document.createElement('li');
-      li.textContent = `第 ${slowCount} 次加载完成`;
-      document.getElementById('slow-list').appendChild(li);
-      btn.disabled = false;
+      errorBox.textContent = '';
+      try {
+        const res = await fetch('/api/slow?ms=2000');
+        if (!res.ok) {
+          errorBox.textContent = `加载失败（HTTP ${res.status}），请重试`;
+          return;
+        }
+        slowCount += 1;
+        const li = document.createElement('li');
+        li.textContent = `第 ${slowCount} 次加载完成`;
+        document.getElementById('slow-list').appendChild(li);
+      } catch {
+        errorBox.textContent = '网络异常，请重试';
+      } finally {
+        btn.disabled = false;
+      }
     });
 
     // 动态列表
