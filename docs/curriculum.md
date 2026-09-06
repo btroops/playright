@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 00 | main | 环境搭建、跑通冒烟测试、第 0 课 | ✅ |
 | 01 | `learn/01-basics` | 测试基础：test/expect/step、命令行参数、headed/debug、UI Mode、Trace Viewer | ✅ |
-| 02 | `learn/02-locators` | 定位器：getByRole/getByLabel/getByText、CSS/XPath、filter、严格模式 | ⬜ |
+| 02 | `learn/02-locators` | 定位器：getByRole/getByLabel/getByText、CSS/XPath、filter、严格模式 | 🔄 进行中 |
 | 03 | `learn/03-assertions` | 断言与等待：web-first 断言、自动等待、超时与轮询 | ⬜ |
 | 04 | `learn/04-interactions` | 交互：表单、下拉、上传、拖拽、对话框、iframe、多标签页 | ⬜ |
 | 05 | `learn/05-pom` | 组织：Page Object Model、自定义 fixtures | ⬜ |
