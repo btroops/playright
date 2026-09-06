@@ -9,10 +9,10 @@
 | 02 | `learn/02-locators` | 定位器：getByRole/getByLabel/getByText、CSS/XPath、filter、严格模式 | ✅ |
 | 03 | `learn/03-assertions` | 断言与等待：web-first 断言、自动等待、超时与轮询 | ✅ |
 | 04 | `learn/04-interactions` | 交互：表单、下拉、上传、拖拽、对话框、iframe、多标签页 | ⬜ |
-| 05 | `learn/05-pom` | 组织：Page Object Model、自定义 fixtures | ⬜ |
-| 06 | `learn/06-network` | 网络：route 拦截与 Mock、等待网络响应 | ⬜ |
-| 07 | `learn/07-api` | API 测试：request fixture、storageState 处理登录态 | ⬜ |
-| 08 | `learn/08-ci` | 工程化：并行、多浏览器、截图对比、（可选）GitHub Actions | ⬜ |
+| 05 | `learn/05-pom` | 组织：Page Object Model、自定义 fixtures | 📚 已备好 |
+| 06 | `learn/06-network` | 网络：route 拦截与 Mock、等待网络响应 | 📚 已备好 |
+| 07 | `learn/07-api` | API 测试：request fixture、storageState 处理登录态 | 📚 已备好 |
+| 08 | `learn/08-ci` | 工程化：并行、多浏览器、截图对比、（可选）GitHub Actions | 📚 已备好 |
 
 ## 各阶段与 demo-app 功能的对应
 
