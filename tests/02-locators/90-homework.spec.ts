@@ -71,15 +71,18 @@ test.describe('作业：严格模式探索', () => {
     await test.step('打开练习场并数数 heading 总数', async () => {
       await page.goto('/lab.html');
 
-      // getByRole('heading')：匹配所有 <h1>~<h6>。练习场有 1 个 <h1>（练习场）+ 7 个 <h2>（七个区块），
-      // 共 8 个。toHaveCount 是「数数」断言，允许多匹配，不受严格模式约束——适合用来先清点个数。
-      await expect(page.getByRole('heading')).toHaveCount(8);
+      // getByRole('heading')：匹配所有 <h1>~<h6>。练习场有 1 个 <h1>（练习场）+ 10 个 <h2>
+      //（七个初始区块 + 第 4 课新增的下拉/拖拽/多标签页三个区块），共 11 个。
+      // ⚠️ 教训：这个断言原来写的是 8——第 4 课给练习场加了区块后它就红了。
+      // 数页面元素个数的断言天然与 UI 演进耦合，改 UI 的分支必须同步修它。
+      // toHaveCount 是「数数」断言，允许多匹配，不受严格模式约束——适合用来先清点个数。
+      await expect(page.getByRole('heading')).toHaveCount(11);
     });
 
     await test.step('对它做动作触发 strict mode violation', async () => {
-      // 无 name 的 getByRole('heading') 一次匹配 8 个元素；click 是「动作」，
+      // 无 name 的 getByRole('heading') 一次匹配 11 个元素；click 是「动作」，
       // 执行时解析定位器、发现多匹配 → 立即抛 strict mode violation。
-      // 结论：匹配到【8 个】——因为页面里 8 个标题角色都是 heading，不加 name 无法区分。
+      // 结论：匹配到【11 个】——页面里这些标题的角色都是 heading，不加 name 无法区分。
       // rejects.toThrow：断言「这个 Promise 会以匹配正则的错误被拒绝」，把「错误行为」固化为用例。
       await expect(
         page.getByRole('heading').click()

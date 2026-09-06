@@ -12,6 +12,8 @@
     .tip-wrap { position: relative; display: inline-block; border-bottom: 1px dotted #555; cursor: help; }
     .tip-wrap .tip { display: none; position: absolute; bottom: 130%; left: 0; background: #333; color: #fff; padding: 6px 10px; border-radius: 4px; white-space: nowrap; }
     .tip-wrap:hover .tip { display: block; }
+    .drag-pool { min-height: 56px; border: 2px dashed #bbb; border-radius: 8px; padding: 10px; margin: 8px 0; color: #999; }
+    .drag-chip { display: inline-block; background: #4a90d9; color: #fff; padding: 6px 14px; border-radius: 14px; cursor: grab; user-select: none; }
   </style>
 </head>
 <body>
@@ -56,6 +58,31 @@
   <section id="hover-section">
     <h2>悬停提示</h2>
     <p>把鼠标悬停在 <span class="tip-wrap" id="hover-target">这段文字<span class="tip" id="hover-tip">悬停提示出现了</span></span> 上。</p>
+  </section>
+
+  <section id="form-section">
+    <h2>下拉选择</h2>
+    <label for="fruit-select">选择水果</label>
+    <select id="fruit-select">
+      <option value="">请选择…</option>
+      <option value="apple">苹果</option>
+      <option value="banana">香蕉</option>
+      <option value="cherry">樱桃</option>
+    </select>
+    <p id="select-result">尚未选择</p>
+  </section>
+
+  <section id="drag-section">
+    <h2>拖拽</h2>
+    <div class="drag-pool" id="drag-source">
+      <span class="drag-chip" id="drag-chip">积木</span>
+    </div>
+    <div class="drag-pool" id="drag-target">放到这里</div>
+  </section>
+
+  <section id="tabs-section">
+    <h2>多标签页</h2>
+    <p><a href="/iframe-inner.html" target="_blank" rel="noopener" id="new-tab-link">在新标签页打开帮助页</a></p>
   </section>
 
   <section id="iframe-section">
@@ -111,6 +138,40 @@
     document.getElementById('submit-btn').addEventListener('click', () => {
       document.getElementById('submit-result').textContent = '提交成功';
     });
+
+    // 下拉选择
+    document.getElementById('fruit-select').addEventListener('change', (e) => {
+      const value = e.target.value;
+      const label = e.target.selectedOptions[0] ? e.target.selectedOptions[0].textContent : '';
+      document.getElementById('select-result').textContent =
+        value ? `已选择：${label}（value=${value}）` : '尚未选择';
+    });
+
+    // 拖拽：用 mouse 事件实现（而非 HTML5 draggable）——
+    // Playwright 的 dragTo 走 mouse down/move/up 序列，本实现可直接被驱动
+    (() => {
+      const chip = document.getElementById('drag-chip');
+      const target = document.getElementById('drag-target');
+      let dragging = false;
+
+      chip.addEventListener('mousedown', () => { dragging = true; });
+      document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        chip.style.position = 'fixed';
+        chip.style.left = `${e.clientX}px`;
+        chip.style.top = `${e.clientY}px`;
+      });
+      document.addEventListener('mouseup', (e) => {
+        if (!dragging) return;
+        dragging = false;
+        chip.style.position = '';
+        const over = document.elementFromPoint(e.clientX, e.clientY);
+        if (over && target.contains(over)) {
+          target.textContent = '已放入：';
+          target.appendChild(chip);
+        }
+      });
+    })();
   </script>
 </body>
 </html>
